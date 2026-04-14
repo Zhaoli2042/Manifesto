@@ -41,6 +41,7 @@
 <p align="center">
   If Manifesto saves you time, consider giving it a ⭐ — it helps others find it!
 </p>
+
 ---
 ## The Problem
 
