@@ -4,7 +4,6 @@
       <img src="programmer.png" width="200" alt="Programmers Before" /><br/>
       <strong>Programmers Before</strong>
     </td>
-    <td align="center" width="80"></td>
     <td align="center">
       <img src="call.jpeg" width="200" alt="Programmers After" /><br/>
       <strong>Programmers After</strong>
