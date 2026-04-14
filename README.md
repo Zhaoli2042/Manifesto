@@ -39,12 +39,13 @@
 </p>
 
 ---
-
 ## The Problem
 
-When you use voice input on AI chat platforms, your spoken words go straight to the model. Speech-to-text is messy — filler words, repetition, half-finished thoughts, garbled phrases. The AI tries to interpret what you meant, but it often gets it wrong. And you never got a chance to fix it.
+Your voice is faster than your fingers — but it's not as precise. When you're explaining a technical concept, describing a bug, or outlining an architecture, typing lets you choose every word carefully. Speaking doesn't. You ramble, repeat yourself, use filler words, and lose structure.
 
-**Manifesto intercepts that flow.** It gives you a pause between speaking and sending, so you can review, edit, and clean up your words before the AI ever sees them.
+That's why most developers still type into AI chats, even though speaking would be 3-4x faster. The tradeoff between speed and accuracy forces you to pick one.
+
+**Manifesto gives you both.** Speak at the speed of thought, then review and fix your words before the AI sees them. Get the speed of voice with the precision of typing.
 
 ## How It Works
 
