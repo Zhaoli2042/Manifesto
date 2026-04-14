@@ -1,7 +1,16 @@
-<p align="center">
-  <img src="programmer.jpeg" width="80" height="80" alt="Before Programmers" />
-  <img src="call.jpeg" width="80" height="80" alt="Future Programmers" />
-</p>
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="programmer.png" width="200" alt="Programmers Before" /><br/>
+      <strong>Programmers Before</strong>
+    </td>
+    <td align="center" width="80"></td>
+    <td align="center">
+      <img src="call.jpeg" width="200" alt="Programmers After" /><br/>
+      <strong>Programmers After</strong>
+    </td>
+  </tr>
+</table>
 
 <p align="center">
   <img src="icons/icon128.png" width="80" height="80" alt="Manifesto icon" />
