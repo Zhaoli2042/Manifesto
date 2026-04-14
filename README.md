@@ -1,11 +1,11 @@
 <table align="center">
-  <tr> 
+  <tr>
     <td align="center">
-      <img src="programmer.png" width="200" alt="Programmers Before" /><br/>
+      <img src="programmer.png?v=1" width="200" alt="Programmers Before" /><br/>
       <strong>Programmers Before</strong>
     </td>
     <td align="center">
-      <img src="call.jpeg" width="200" alt="Programmers After" /><br/>
+      <img src="call.jpeg?v=1" width="200" alt="Programmers After" /><br/>
       <strong>Programmers After</strong>
     </td>
   </tr>
