@@ -1,5 +1,5 @@
 <table align="center">
-  <tr>
+  <tr> 
     <td align="center">
       <img src="programmer.png" width="200" alt="Programmers Before" /><br/>
       <strong>Programmers Before</strong>
