@@ -38,6 +38,9 @@
   <img src="https://img.shields.io/badge/chrome-extension-yellow" alt="Chrome Extension" />
 </p>
 
+<p align="center">
+  If Manifesto saves you time, consider giving it a ⭐ — it helps others find it!
+</p>
 ---
 ## The Problem
 
