@@ -59,6 +59,8 @@ Recording auto-stops after 2.5 seconds of silence, so you don't have to click a 
 | Claude | claude.ai |
 | ChatGPT | chatgpt.com |
 | Gemini | gemini.google.com |
+| Grok | grok.com |
+| Kimi | kimi.com |
 | Copilot | copilot.microsoft.com |
 
 ## Installation

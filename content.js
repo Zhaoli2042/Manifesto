@@ -61,16 +61,84 @@
       },
     },
     'gemini.google.com': {
-      inputSelector: '.ql-editor, div[contenteditable="true"]',
-      sendSelector: 'button.send-button, button[aria-label="Send message"]',
-      getText(el) { return el.innerText.trim(); },
-      setText(el, text) { el.focus(); el.innerHTML = ''; document.execCommand('insertText', false, text); },
+      inputSelector: 'rich-textarea .ql-editor, rich-textarea div[contenteditable="true"], .ql-editor, div[contenteditable="true"].text-input-area, div.ql-editor[contenteditable="true"], textarea[aria-label], div[contenteditable="true"]',
+      sendSelector: 'button.send-button, button[aria-label="Send message"], button[data-test-id="send-button"], .send-button-container button, button[mat-icon-button][aria-label="Send message"]',
+      getText(el) { return (el.value ?? el.innerText).trim(); },
+      setText(el, text) {
+        el.focus();
+
+        // Strategy 1: If it's a textarea
+        if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+          const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
+          if (nativeSetter) nativeSetter.call(el, text);
+          else el.value = text;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+          return;
+        }
+
+        // Strategy 2: contenteditable — clear and use execCommand
+        el.innerHTML = '';
+        el.focus();
+        if (document.execCommand('insertText', false, text)) {
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          return;
+        }
+
+        // Strategy 3: fallback — set innerHTML/textContent and fire events
+        el.textContent = text;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+        // Also dispatch keyboard events to trigger Gemini's internal listeners
+        el.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: 'a' }));
+        el.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true, key: 'a' }));
+      },
     },
     'copilot.microsoft.com': {
       inputSelector: '#searchbox, textarea',
       sendSelector: 'button[aria-label="Submit"]',
       getText(el) { return (el.value ?? el.innerText).trim(); },
       setText(el, text) { el.value = text; el.dispatchEvent(new Event('input', { bubbles: true })); },
+    },
+    'grok.com': {
+      inputSelector: 'textarea, div[contenteditable="true"]',
+      sendSelector: 'button[aria-label="Send"], button[aria-label="Send message"], button[type="submit"]',
+      getText(el) { return (el.value ?? el.innerText).trim(); },
+      setText(el, text) {
+        el.focus();
+        if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+          const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
+          if (nativeSetter) nativeSetter.call(el, text);
+          else el.value = text;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          el.innerHTML = '';
+          el.focus();
+          document.execCommand('insertText', false, text);
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      },
+    },
+    'kimi.com': {
+      inputSelector: 'textarea, div[contenteditable="true"], .chat-input textarea, .editor-container div[contenteditable="true"]',
+      sendSelector: 'button[aria-label="Send"], button[aria-label="Send message"], button.send-btn, button[type="submit"]',
+      getText(el) { return (el.value ?? el.innerText).trim(); },
+      setText(el, text) {
+        el.focus();
+        if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+          const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value')?.set;
+          if (nativeSetter) nativeSetter.call(el, text);
+          else el.value = text;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          el.innerHTML = '';
+          el.focus();
+          document.execCommand('insertText', false, text);
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      },
     },
   };
 
@@ -939,10 +1007,18 @@
     config.setText(input, finalText);
     closeEditor();
 
-    setTimeout(() => {
+    // Try to click send with retries — some sites need time to enable the button
+    let attempts = 0;
+    const trySend = () => {
       const sendBtn = document.querySelector(config.sendSelector);
-      if (sendBtn) sendBtn.click();
-    }, 250);
+      if (sendBtn && !sendBtn.disabled) {
+        sendBtn.click();
+      } else if (attempts < 5) {
+        attempts++;
+        setTimeout(trySend, 200);
+      }
+    };
+    setTimeout(trySend, 300);
   }
 
   // ---- Close Editor ----
