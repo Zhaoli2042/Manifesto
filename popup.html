@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 320px;
+      background: #0e0f11;
+      color: #e4e4e7;
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, #6ee7b7 0%, #3ba88a 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #0e0f11;
+      font-weight: 700;
+    }
+
+    .header h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+    .header p { font-size: 11px; color: #8b8d97; margin-top: 2px; }
+
+    .section {
+      padding: 14px 16px;
+      background: #18191d;
+      border: 1px solid #2a2c33;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggle-row label { font-size: 13px; font-weight: 500; }
+
+    .toggle { position: relative; width: 42px; height: 24px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0; background: #2a2c33;
+      border-radius: 24px; cursor: pointer; transition: 0.2s ease;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute; width: 18px; height: 18px;
+      left: 3px; top: 3px; background: #8b8d97;
+      border-radius: 50%; transition: 0.2s ease;
+    }
+    .toggle input:checked + .toggle-slider { background: rgba(110, 231, 183, 0.25); }
+    .toggle input:checked + .toggle-slider::before { transform: translateX(18px); background: #6ee7b7; }
+
+    .field-label {
+      font-size: 12px;
+      color: #8b8d97;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .text-input {
+      width: 100%;
+      background: #0e0f11;
+      border: 1px solid #2a2c33;
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: #e4e4e7;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .text-input:focus { border-color: #6ee7b7; }
+    .text-input::placeholder { color: #55575f; }
+
+    .info {
+      font-size: 11px;
+      color: #55575f;
+      line-height: 1.5;
+      margin-top: 6px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #2a2c33;
+      margin: 14px 0;
+    }
+
+    .how-it-works {
+      margin-top: 14px;
+    }
+
+    .how-it-works h3 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8b8d97;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(110, 231, 183, 0.12);
+      color: #6ee7b7;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 12px;
+      color: #b4b4b8;
+      line-height: 1.4;
+    }
+
+    .sites {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .site-tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      background: rgba(110, 231, 183, 0.08);
+      border: 1px solid rgba(110, 231, 183, 0.15);
+      border-radius: 99px;
+      color: #6ee7b7;
+    }
+
+    .saved-msg {
+      font-size: 11px;
+      color: #6ee7b7;
+      opacity: 0;
+      transition: opacity 0.2s;
+      margin-top: 4px;
+    }
+
+    .saved-msg.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">💎</div>
+    <div>
+      <h1>Manifesto</h1>
+      <p>Speak your mind, send it right</p>
+    </div>
+  </div>
+
+  <div class="section toggle-row">
+    <label>Enable Manifesto</label>
+    <div class="toggle">
+      <input type="checkbox" id="enabled" checked>
+      <span class="toggle-slider"></span>
+    </div>
+  </div>
+
+  <div class="section">
+    <label class="field-label">Anthropic API Key (optional)</label>
+    <input type="password" class="text-input" id="apiKey" placeholder="sk-ant-...">
+    <div class="info">For "Polish with AI" feature. Without this, a basic local cleanup is used instead.</div>
+    <div class="saved-msg" id="saved-msg">Saved!</div>
+  </div>
+
+  <div class="section">
+    <label class="field-label">Speech Language</label>
+    <input type="text" class="text-input" id="lang" placeholder="en-US" value="">
+    <div class="info">Leave blank to auto-detect. Examples: en-US, zh-CN, es-ES, ja-JP</div>
+  </div>
+
+  <div class="how-it-works">
+    <h3>How it works</h3>
+    <div class="step">
+      <span class="step-num">1</span>
+      <span class="step-text">Click the floating mic button on any supported chat site</span>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <span class="step-text">Speak naturally — see live transcription</span>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <span class="step-text">Stop recording — edit sentences individually, reorder, delete</span>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span>
+      <span class="step-text">Optionally polish with AI, then send to the chat</span>
+    </div>
+  </div>
+
+  <div class="info" style="margin-top: 14px;">
+    Works on:
+    <div class="sites">
+      <span class="site-tag">claude.ai</span>
+      <span class="site-tag">chatgpt.com</span>
+      <span class="site-tag">gemini</span>
+      <span class="site-tag">copilot</span>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('enabled');
+    const apiKeyInput = document.getElementById('apiKey');
+    const langInput = document.getElementById('lang');
+    const savedMsg = document.getElementById('saved-msg');
+
+    // Load
+    chrome.storage.sync.get(['voicePolish_enabled', 'voicePolish_apiKey', 'voicePolish_lang'], (data) => {
+      if (data.voicePolish_enabled !== undefined) toggle.checked = data.voicePolish_enabled;
+      if (data.voicePolish_apiKey) apiKeyInput.value = data.voicePolish_apiKey;
+      if (data.voicePolish_lang) langInput.value = data.voicePolish_lang;
+    });
+
+    function flashSaved() {
+      savedMsg.classList.add('show');
+      setTimeout(() => savedMsg.classList.remove('show'), 1500);
+    }
+
+    toggle.addEventListener('change', () => {
+      chrome.storage.sync.set({ voicePolish_enabled: toggle.checked });
+    });
+
+    let apiKeyTimer;
+    apiKeyInput.addEventListener('input', () => {
+      clearTimeout(apiKeyTimer);
+      apiKeyTimer = setTimeout(() => {
+        chrome.storage.sync.set({ voicePolish_apiKey: apiKeyInput.value.trim() });
+        flashSaved();
+      }, 600);
+    });
+
+    let langTimer;
+    langInput.addEventListener('input', () => {
+      clearTimeout(langTimer);
+      langTimer = setTimeout(() => {
+        chrome.storage.sync.set({ voicePolish_lang: langInput.value.trim() });
+        flashSaved();
+      }, 600);
+    });
+  </script>
+</body>
+</html>
